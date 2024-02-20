@@ -3,18 +3,18 @@
   <component name="JupyterPersistentConnectionParameters">
     <option name="moduleParameters">
       <map>
+        <entry key="$USER_HOME$/PycharmProjects/profile/.idea/profile.iml">
+          <value>
+            <JupyterConnectionParameters>
+              <option name="managed" value="true" />
+            </JupyterConnectionParameters>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/.idea/Brave.iml">
           <value>
             <JupyterConnectionParameters>
               <option name="managed" value="true" />
               <option name="sdkName" value="Python 3.11 (Brave)" />
-            </JupyterConnectionParameters>
-          </value>
-        </entry>
-        <entry key="$USER_HOME$/PycharmProjects/profile/.idea/profile.iml">
-          <value>
-            <JupyterConnectionParameters>
-              <option name="managed" value="true" />
             </JupyterConnectionParameters>
           </value>
         </entry>
