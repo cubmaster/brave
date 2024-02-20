@@ -11,7 +11,20 @@
       Team
     </div>
     <div class="col-lg-9">
-      output
+      <ul class="list-unstyled">
+        <li  *ngFor="let message of messages">
+          <div class="alert alert-primary" role="alert">
+            <span><h4>{{message.sender}}</h4></span>
+              <br/>
+
+              <span>
+                <markdown
+                  [data]="message.content"
+                  [inline]="true">
+              </markdown></span>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

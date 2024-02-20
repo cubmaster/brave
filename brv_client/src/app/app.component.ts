@@ -1,6 +1,8 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 
 import {SocketService} from "./services/socket.service";
+import {MarkdownService} from "ngx-markdown";
+import {AgentMessage} from "./types";
 
 @Component({
   selector: 'app-root',
@@ -11,13 +13,16 @@ export class AppComponent implements OnInit,OnDestroy{
   @ViewChild('task') task!: ElementRef<HTMLTextAreaElement>;
 
   team=[
-    {name:"Assistant",prompt:"You are a helpful assistant"},
-    {name:"Reviewer",prompt:"You are a cynic and you comment everything"}
+    {name:"Assistant"},
+    {name:"Reviewer",prompt:"You are a code reviewer and you comment on any python code to be sure its correct.  You will be sure all needed packages for the code are installed with pip install commands in bash before the script runs.  When you are done send the code to user_proxy for execution."}
   ]
   room = "tadsroom";
   user= "tad";
 
-  constructor(private socketService: SocketService) {}
+  messages: any[]=[];
+
+
+  constructor(private socketService: SocketService,private markdownService: MarkdownService) {}
 
   ngOnInit(): void {
     this.socketService.listenEvent('connection', (data) => {
@@ -31,11 +36,22 @@ export class AppComponent implements OnInit,OnDestroy{
     this.socketService.listenEvent('joined', (data) => {
              console.log("joined")
       console.log(data);
-      //this.startAgent();
+
     });
     this.socketService.listenEvent("agent_response",(data)=>{
-                   console.log("agent_response")
-      console.log(data)
+        let msg:AgentMessage = {sender:"",content:""};
+        msg.content = <string>this.markdownService.parse(data.content);
+
+        if(data.content.length>0){
+          if(data.sender==="user_proxy") {
+            msg.sender = this.room;
+          }else{
+            msg.sender = data.sender;
+          }
+          console.log(msg);
+          this.messages.push(msg);
+        }
+
     })
     this.joinRoom();
 

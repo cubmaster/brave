@@ -4,3 +4,4 @@ Werkzeug==2.2.2
 Litellm==1.25.2
 python-docker
 docker
+pyautogen

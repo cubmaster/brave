@@ -32,10 +32,14 @@
             "styles": [
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/bootstrap-icons/font/bootstrap-icons.css"
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "node_modules/prismjs/themes/prism-okaidia.css"
             ],
             "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/components/prism-python.min.js",
+              "node_modules/prismjs/components/prism-css.min.js"
             ]
           },
           "configurations": {
@@ -69,10 +73,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "brv_client:build:production"
+              "buildTarget": "brv_client:build:production"
             },
             "development": {
-              "browserTarget": "brv_client:build:development"
+              "buildTarget": "brv_client:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +84,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "brv_client:build"
+            "buildTarget": "brv_client:build"
           }
         },
         "test": {
