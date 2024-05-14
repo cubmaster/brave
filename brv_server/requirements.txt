@@ -5,3 +5,10 @@ Litellm==1.25.2
 python-docker
 docker
 pyautogen
+pyautogen[redis]
+pyautogen[ipython]
+pyautogen[graph]
+flask_cors
+numpy
+unstructured
+unstructured[all-docs]

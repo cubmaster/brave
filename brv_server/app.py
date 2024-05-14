@@ -1,8 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask
 from flask_socketio import SocketIO, emit, join_room
 from flask_cors import CORS
 from flask import session
-from brv_server.Agent.AutogenTest import run_agent
+from Agent.AutogenTest import run_agent
+from RAG.WebReader import html_embed
 
 app = Flask(__name__)
 CORS(app)
@@ -11,8 +12,13 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 
 @socketio.event
-def start_agent(taskmessage):
-    run_agent(socketio, taskmessage)
+def htmlEmbed(task_message):
+    html_embed(socketio, task_message)
+
+
+@socketio.event
+def start_agent(task_message):
+    run_agent(socketio, task_message)
 
 
 @socketio.on('message')

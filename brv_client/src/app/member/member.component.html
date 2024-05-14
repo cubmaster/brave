@@ -1,0 +1,19 @@
+<div class="alert alert-light text-center" role="alert">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col text-end">
+        <i class="bi bi-person-fill"></i>
+      </div>
+      <div class="col text-center">
+        {{Member?.name}}
+      </div>
+      <div class="col text-start">
+        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-sm" (click)="delete()"><i class="bi bi-trash-fill"></i></button>
+          <button type="button" class="btn btn-sm" (click)="edit()"><i class="bi bi-gear-fill"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
