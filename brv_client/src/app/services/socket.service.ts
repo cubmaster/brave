@@ -25,6 +25,7 @@ export class SocketService {
     this.socket.on(event, callback);
   }
 
+
   // Disconnect the socket
   disconnect(): void {
     if (this.socket) {

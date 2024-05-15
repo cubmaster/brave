@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask import session
 from Agent.AutogenTest import run_agent
 from RAG.WebReader import html_embed
+from brv_server.Database.mongo import get, save
 
 app = Flask(__name__)
 CORS(app)
@@ -14,6 +15,17 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 @socketio.event
 def htmlEmbed(task_message):
     html_embed(socketio, task_message)
+
+@socketio.event
+def save_agent(agent):
+    id = save('agents',agent)
+    # save_agent(agent)
+    emit('agent_saved', {'message': 'Agent saved successfully', 'id': id})
+
+@socketio.event
+def get_agents():
+    result = get('agents')
+    emit('agents_list',result)
 
 
 @socketio.event

@@ -27,8 +27,8 @@ def run_agent(passed_socket: SocketIO, args: dict):
 
     local_config_list = [
         {
-            "model": "lamma3:8b",
-            "base_url": "http://localhost:11434/api",
+            "model": "llama3:8b",
+            "base_url": "http://localhost:11434/v1",
             "api_key": "ollama"
         }
     ]
@@ -37,6 +37,7 @@ def run_agent(passed_socket: SocketIO, args: dict):
         "cache_seed": None
 
     }
+    llm_config = local_llm_config
 
     team = args["team"]
     room = args["room"]
@@ -48,11 +49,11 @@ def run_agent(passed_socket: SocketIO, args: dict):
         if "prompt" in team_member:
             agents.append(AssistantAgent(team_member["name"],
                                          system_message=team_member["prompt"],
-                                         llm_config=local_llm_config,
+                                         llm_config=llm_config,
                                          description=team_member["description"]
                                          ))
 
-    assistant = AssistantAgent(name="Assistant", llm_config=local_llm_config,
+    assistant = AssistantAgent(name="Assistant", llm_config=llm_config,
                                description="""A helpful and general-purpose AI assistant that has strong 
                                language skills, Python skills, and Linux command line skills. 
                                Writes code to be executed by the Executor""",
@@ -104,7 +105,7 @@ Reply "TERMINATE" in the end when everything is done.""")
         GroupChatManager._print_received_message = new_print_received_message
         group_chat = GroupChat(agents=agents, messages=[], speaker_selection_method="round_robin")
         group_chat.next_agent(agents[0])
-        group_chat_manager = GroupChatManager(group_chat, llm_config=gpt_llm_config)
+        group_chat_manager = GroupChatManager(group_chat, llm_config=llm_config)
         #with Cache.redis(redis_url="redis://localhost:6379/0") as cache:
         user_proxy.initiate_chat(group_chat_manager, message=task)
 

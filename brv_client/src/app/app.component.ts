@@ -12,29 +12,13 @@ import {Agent, AgentMessage} from "./types";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit,OnDestroy{
+
+
   @ViewChild('task') task!: ElementRef<HTMLTextAreaElement>;
   @ViewChild('agentEditor', { static: false }) agentEditor!: ElementRef;
   currentAgent: Agent =  <Agent>{};
-   xteam: Agent[]=[]
-  team: Agent[] = [
-    {name:"Planner",
-      prompt:"Planner. Suggest a plan. Revise the plan based on feedback from the critic.\n" +
-        "The plan may involve an assistant who can write code and a researcher who doesn't write code.\n" +
-        "The user will execute any code. Explain the plan first. Be clear which step is performed by the assistant, and which step is performed by a researcher.",
-      description:"A planner agent. Comes up with the plan for solving the task"
-    },
-    {name:"Researcher",
-      prompt:"Researcher. You follow an approved plan. You are able to access internet but output the " +
-        " research you find in html anchor tags that you store to the word_dir in a html document. You don't write code. " +
-        "The user will execute any code. ",
-          description: "Researcher agent. Can search internet for to execute steps on the plan. Does not code."},
-    {name:"Critic",
-      prompt:"Critic. Double check plan, claims, code from other agents and provide feedback. " +
-        "Check whether the plan includes adding verifiable info such as source URL. The user will execute any code. ",
-       description: "Critics the plan, research and code to can comes up with ideas to make it better. Does not code."
-    }
-
-  ]
+  team: Agent[]=[];
+  agents: Agent[]=[];
 
   room = "tadsroom";
   user= "tad";
@@ -73,6 +57,12 @@ export class AppComponent implements OnInit,OnDestroy{
         }
 
     })
+    this.socketService.listenEvent("agents_list",(data:any)=>{
+
+      this.agents =  JSON.parse(data);
+    })
+
+    this.socketService.emitEvent("get_agents",()=>{})
     this.joinRoom();
 
   }
@@ -102,7 +92,7 @@ export class AppComponent implements OnInit,OnDestroy{
     modal.show();
 
   }
-  deleteAgent(agent: Agent) {
+  deleteAgent(agent:Agent) {
     const index = this.team.indexOf(agent);
     if (index !== -1) {
       this.team.splice(index, 1);
@@ -115,5 +105,21 @@ export class AppComponent implements OnInit,OnDestroy{
     this.editAgent(newAgent);
 
   }
+
+  saveAgent(){ 
+    this.socketService.emitEvent('save_agent', this.currentAgent);
+  }
+
+  addToTeam(agent: Agent) {
+    const index = this.team.indexOf(agent);
+    if (index !== -1) {
+      this.team.splice(index, 1);
+    }else{
+      this.team.push(agent);
+    }
+
+
+  }
+
 
 }
